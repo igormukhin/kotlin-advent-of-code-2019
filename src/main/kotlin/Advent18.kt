@@ -6,7 +6,7 @@ fun main() {
     val walls = mutableListOf<MutableList<Boolean>>()
     val keys = mutableMapOf<Char, Point>()
     val doors = mutableMapOf<Char, Point>()
-    var meStart = Point()
+    var me = Point()
 
     input.lines().forEachIndexed { i, ln ->
         if (i + 1 > walls.size) walls.add(mutableListOf())
@@ -15,15 +15,15 @@ fun main() {
             row.add(false)
             when (ch) {
                 '#' -> row[j] = true
-                '@' -> meStart = Point(i, j)
+                '@' -> me = Point(i, j)
                 in 'a'..'z' -> keys[ch] = Point(i, j)
                 in 'A'..'Z' -> doors[ch.toLowerCase()] = Point(i, j)
             }
         }
     }
 
-    taskA(keys, doors, walls, meStart)
-    taskB(keys, doors, walls, meStart)
+    taskA(keys, doors, walls, me)
+    taskB(keys, doors, walls, me)
 
 }
 
@@ -31,9 +31,9 @@ private fun taskA(
     keys: MutableMap<Char, Point>,
     doors: MutableMap<Char, Point>,
     walls: MutableList<MutableList<Boolean>>,
-    meStart: Point
+    me: Point
 ) {
-    val leastSteps = solve(keys, doors, walls, listOf(meStart))
+    val leastSteps = solve(keys, doors, walls, listOf(me))
     println("A: $leastSteps")
 }
 
@@ -69,26 +69,12 @@ private fun solve(
     val pointToDoors = doors.entries.associate { (k, v) -> v to k }
     val keysTaken = mutableSetOf<Char>()
     var leastSteps = Int.MAX_VALUE
-    var solutions = 0
-    val optimizationMap = mutableMapOf<Pair<Set<Char>, Char>, Int>()
+    val optimizationMap = mutableMapOf<Pair<Set<Char>, List<Point>>, Int>()
 
     fun go(robots: List<Point>, steps: Int) {
         if (keysTaken.size == keys.size) {
             leastSteps = min(leastSteps, steps)
-            solutions++
-            if (solutions % 10000 == 0) println("solutions: $solutions, leastSteps: $leastSteps")
             return
-        }
-
-        fun optimize(p: Point, cost: Int): Boolean {
-            val mapKey = keysTaken.toMutableSet() to pointToKeys[p]!!
-            val value = optimizationMap[mapKey]
-            return if (value == null || value > steps + cost) {
-                optimizationMap[mapKey] = steps + cost
-                true
-            } else {
-                false
-            }
         }
 
         robots.forEachIndexed { robotIndex, robot ->
@@ -109,13 +95,23 @@ private fun solve(
                 { _, _ -> 1 }
             )
 
-            val sortedKeys = reachableKeys
-                .filter { (k, v) -> optimize(k, v) }
-                .map { (k, v) -> k to v }
-                .sortedBy { it.second }
+            fun optimize(p: Point, cost: Int): Boolean {
+                val newRobots = robots.toMutableList()
+                newRobots[robotIndex] = p
+                val mapKey = keysTaken.toMutableSet() to newRobots
+                val value = optimizationMap[mapKey]
+                return if (value == null || value > steps + cost) {
+                    optimizationMap[mapKey] = steps + cost
+                    true
+                } else {
+                    false
+                }
+            }
+
+            val optimizedKeys = reachableKeys.filter { (k, v) -> optimize(k, v) }
 
             // iterate over them
-            sortedKeys.forEach { (p, cost) ->
+            optimizedKeys.forEach { (p, cost) ->
                 val key = pointToKeys[p]!!
                 keysTaken.add(key)
                 val newRobots = robots.toMutableList()
