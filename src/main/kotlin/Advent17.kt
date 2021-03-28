@@ -230,12 +230,3 @@ private fun directionFrom(ch: Char): Direction {
         else -> throw IllegalArgumentException()
     }
 }
-
-private fun Point.move(dir: Direction, amount: Int = 1): Point {
-    return when (dir) {
-        Direction.NORTH -> Point(x - amount, y)
-        Direction.SOUTH -> Point(x + amount, y)
-        Direction.WEST -> Point(x, y - amount)
-        Direction.EAST -> Point(x, y + amount)
-    }
-}

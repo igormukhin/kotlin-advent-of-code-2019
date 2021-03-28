@@ -125,12 +125,3 @@ private fun solve(
     go(robotsInitial, 0)
     return leastSteps
 }
-
-private fun Point.move(dir: Direction, amount: Int = 1): Point {
-    return when (dir) {
-        Direction.NORTH -> Point(x - amount, y)
-        Direction.SOUTH -> Point(x + amount, y)
-        Direction.WEST -> Point(x, y - amount)
-        Direction.EAST -> Point(x, y + amount)
-    }
-}

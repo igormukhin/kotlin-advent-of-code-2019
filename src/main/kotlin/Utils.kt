@@ -12,6 +12,19 @@ data class Point(val x: Int = 0, val y: Int = 0) {
     fun turnClockwise(): Point = Point(-y, x)
     fun turnCounterClockwise(): Point = Point(y, -x)
     operator fun plus(op: Point): Point = Point(x + op.x, y + op.y)
+
+    /**
+     * for x growing to south.
+     * for y growing to east.
+     */
+    fun move(dir: Direction, amount: Int = 1): Point {
+        return when (dir) {
+            Direction.NORTH -> Point(x - amount, y)
+            Direction.SOUTH -> Point(x + amount, y)
+            Direction.WEST -> Point(x, y - amount)
+            Direction.EAST -> Point(x, y + amount)
+        }
+    }
 }
 
 data class Point3D(val x: Int = 0, val y: Int = 0, val z: Int = 0) {

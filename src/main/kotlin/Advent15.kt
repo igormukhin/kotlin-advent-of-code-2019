@@ -11,7 +11,7 @@ private fun Direction.asCode(): Long {
     }
 }
 
-private fun Point.move(dir: Direction, amount: Int = 1): Point {
+private fun Point.moveSpecial(dir: Direction, amount: Int = 1): Point {
     return when (dir) {
         Direction.NORTH -> Point(x, y - amount)
         Direction.SOUTH -> Point(x, y + amount)
@@ -36,7 +36,7 @@ fun main() {
     try {
         Task9.runProgram(program, {
             val direction = plannedMoves.removeFirst()
-            nextRobot = robot.move(direction)
+            nextRobot = robot.moveSpecial(direction)
             direction.asCode()
         }, { signal ->
             // process signal
@@ -68,7 +68,7 @@ fun main() {
 
         val stepsToValve = SalesmanHelpers.findShortestPath(Point(),
             { p -> p == valve },
-            { p -> Direction.values().map { p.move(it) }
+            { p -> Direction.values().map { p.moveSpecial(it) }
                 .filter { map[it] in listOf(MapCell.EMPTY, MapCell.UNKNOWN) } },
             { _, _ -> 1 }).size - 1
         println("A: $stepsToValve")
@@ -78,7 +78,7 @@ fun main() {
     var oxygenPathLength = -1
     SalesmanHelpers.findShortestPath(valve,
         { _ -> false },
-        { p -> Direction.values().map { p.move(it) }
+        { p -> Direction.values().map { p.moveSpecial(it) }
             .filter { map[it]!! in listOf(MapCell.EMPTY) } },
         { _, _ -> 1 },
         { m -> oxygenPathLength = m.values.maxOrNull()!! })
@@ -100,7 +100,7 @@ private fun printMap(map: MutableMap<Point, MapCell>, valve: Point, robot: Point
 private fun planMoves(map: Map<Point, MapCell>, robot: Point): List<Direction> {
     val pathToUnknown = SalesmanHelpers.findShortestPath(robot,
         { p -> map[p] ?: MapCell.UNKNOWN == MapCell.UNKNOWN },
-        { p -> Direction.values().map { p.move(it) }
+        { p -> Direction.values().map { p.moveSpecial(it) }
             .filter { map[it] ?: MapCell.UNKNOWN in listOf(MapCell.EMPTY, MapCell.UNKNOWN) } },
         { _, _ -> 1 })
     if (pathToUnknown.isEmpty()) throw InterruptProgramException("map is fully discovered")
