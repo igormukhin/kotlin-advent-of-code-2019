@@ -9,4 +9,3 @@ Advent of Code 2019 solved in Kotlin
 
 * Day 10. Function isInLineOfSight feels like too sophisticated
 * Day 10. Function taskB uses cycle back (see line "n--") to overcome 360 degrees. Perhaps there is a better solution
-* Day 16. Task B is not solved.
