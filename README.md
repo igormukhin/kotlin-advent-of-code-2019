@@ -3,8 +3,6 @@ Advent of Code 2019 solved in Kotlin
 
 [Advent of Code](http://adventofcode.com/2019/) solved in [Kotlin](https://kotlinlang.org/).
 
-
-
 ### TODO
 
 * Day 10. Function isInLineOfSight feels like too sophisticated
