@@ -65,7 +65,7 @@ fun main() {
 
     // Task A
     run {
-        val path = SalesmanHelpers.findShortestPath(entryPortal.exit,
+        val path = Dijkstra.findShortestPath(entryPortal.exit,
             { p -> p == exitPortal.exit },
             { p ->
                 Direction.values().map { dir ->
@@ -85,7 +85,7 @@ fun main() {
     //   inner portals send down to level + 1
     //   outer portals send up to level - 1
     run {
-        val path = SalesmanHelpers.findShortestPath(entryPortal.exit.onLevel(0),
+        val path = Dijkstra.findShortestPath(entryPortal.exit.onLevel(0),
             { p -> p == exitPortal.exit.onLevel(0) },
             { p ->
                 Direction.values().map { dir ->

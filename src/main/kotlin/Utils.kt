@@ -165,8 +165,7 @@ fun LongRange.binarySearch(comparator: (Long) -> Int,
 }
 
 
-// Travelling Salesman Problem algorithm helpers
-object SalesmanHelpers {
+object Dijkstra {
 
     /**
      * C - coordinate

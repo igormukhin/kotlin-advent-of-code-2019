@@ -66,7 +66,7 @@ fun main() {
 
         println("Oxygen valve is at $valve")
 
-        val stepsToValve = SalesmanHelpers.findShortestPath(Point(),
+        val stepsToValve = Dijkstra.findShortestPath(Point(),
             { p -> p == valve },
             { p -> Direction.values().map { p.moveSpecial(it) }
                 .filter { map[it] in listOf(MapCell.EMPTY, MapCell.UNKNOWN) } },
@@ -76,7 +76,7 @@ fun main() {
 
     // Task B
     var oxygenPathLength = -1
-    SalesmanHelpers.findShortestPath(valve,
+    Dijkstra.findShortestPath(valve,
         { _ -> false },
         { p -> Direction.values().map { p.moveSpecial(it) }
             .filter { map[it]!! in listOf(MapCell.EMPTY) } },
@@ -98,7 +98,7 @@ private fun printMap(map: MutableMap<Point, MapCell>, valve: Point, robot: Point
 }
 
 private fun planMoves(map: Map<Point, MapCell>, robot: Point): List<Direction> {
-    val pathToUnknown = SalesmanHelpers.findShortestPath(robot,
+    val pathToUnknown = Dijkstra.findShortestPath(robot,
         { p -> map[p] ?: MapCell.UNKNOWN == MapCell.UNKNOWN },
         { p -> Direction.values().map { p.moveSpecial(it) }
             .filter { map[it] ?: MapCell.UNKNOWN in listOf(MapCell.EMPTY, MapCell.UNKNOWN) } },

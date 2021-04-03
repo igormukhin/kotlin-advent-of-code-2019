@@ -79,7 +79,7 @@ private fun solve(
 
         robots.forEachIndexed { robotIndex, robot ->
             // find all reachable not taken keys
-            val reachableKeys = SalesmanHelpers.findTargets(robot,
+            val reachableKeys = Dijkstra.findTargets(robot,
                 { p -> pointToKeys.contains(p) && !keysTaken.contains(pointToKeys[p]) },
                 { sp ->
                     if (pointToKeys.contains(sp) && !keysTaken.contains(pointToKeys[sp])) {
