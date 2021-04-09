@@ -13,9 +13,7 @@ fun main() {
 
 private fun taskA(program: List<Int>) {
     var max = Int.MIN_VALUE
-    permuteIndexes(4) {
-        max = max(calcA(it, program), max)
-    }
+    permutations(5).forEach { max = max(calcA(it, program), max) }
     println("A: $max")
 }
 
@@ -29,9 +27,7 @@ private fun calcA(settings: IntArray, program: List<Int>): Int {
 
 private fun taskB(program: List<Int>) {
     var max = Int.MIN_VALUE
-    permuteIndexes(4) {
-        max = max(calcB(it, program), max)
-    }
+    permutations(5).forEach { max = max(calcB(it, program), max) }
     println("B: $max")
 }
 

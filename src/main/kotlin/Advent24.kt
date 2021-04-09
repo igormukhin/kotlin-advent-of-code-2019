@@ -94,10 +94,10 @@ private class RecursiveMap(val map: Map<Int, Array<BooleanArray>>) {
                 if (i == 2 && j == 2) {
                     val level = map[levelNum + 1] ?: emptyLevel
                     return when (dir) {
-                        Direction.NORTH -> level.last().sumBy { it.toInt() }
-                        Direction.SOUTH -> level.first().sumBy { it.toInt() }
-                        Direction.WEST -> level.sumBy { it.last().toInt() }
-                        Direction.EAST -> level.sumBy { it.first().toInt() }
+                        Direction.UP -> level.last().sumBy { it.toInt() }
+                        Direction.DOWN -> level.first().sumBy { it.toInt() }
+                        Direction.LEFT -> level.sumBy { it.last().toInt() }
+                        Direction.RIGHT -> level.sumBy { it.first().toInt() }
                     }
                 } else {
                     val level = map[levelNum]
@@ -110,20 +110,20 @@ private class RecursiveMap(val map: Map<Int, Array<BooleanArray>>) {
             } else {
                 val level = map[levelNum - 1] ?: emptyLevel
                 return when (dir) {
-                    Direction.NORTH -> level[1][2].toInt()
-                    Direction.SOUTH -> level[3][2].toInt()
-                    Direction.WEST -> level[2][1].toInt()
-                    Direction.EAST -> level[2][3].toInt()
+                    Direction.UP -> level[1][2].toInt()
+                    Direction.DOWN -> level[3][2].toInt()
+                    Direction.LEFT -> level[2][1].toInt()
+                    Direction.RIGHT -> level[2][3].toInt()
                 }
             }
 
         }
 
         fun countAround(levelNum: Int, i: Int, j: Int): Int {
-            return countOn(levelNum, i - 1, j, Direction.NORTH) +
-                    countOn(levelNum, i + 1, j, Direction.SOUTH) +
-                    countOn(levelNum, i, j - 1, Direction.WEST) +
-                    countOn(levelNum, i, j + 1, Direction.EAST)
+            return countOn(levelNum, i - 1, j, Direction.UP) +
+                    countOn(levelNum, i + 1, j, Direction.DOWN) +
+                    countOn(levelNum, i, j - 1, Direction.LEFT) +
+                    countOn(levelNum, i, j + 1, Direction.RIGHT)
         }
 
         val evolved = mutableMapOf<Int, Array<BooleanArray>>()

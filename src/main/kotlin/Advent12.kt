@@ -22,7 +22,7 @@ private fun taskA(startingAt: List<Point3D>) {
         step++
 
         // update velocities
-        permuteIndexes(moons.size - 1, 2) { (i, j) ->
+        permutations(moons.size, 2).forEach { (i, j) ->
             if (moons[i].x < moons[j].x) speeds[i].x++
             if (moons[i].x > moons[j].x) speeds[i].x--
             if (moons[i].y < moons[j].y) speeds[i].y++
@@ -66,7 +66,7 @@ private fun calcStepsToRotation(startingAt: List<Point3D>, read: (Point3D) -> In
         step++
 
         // update velocities
-        permuteIndexes(moons.size - 1, 2) { (i, j) ->
+        permutations(moons.size).forEach { (i, j) ->
             if (moons[i] < moons[j]) speeds[i]++
             if (moons[i] > moons[j]) speeds[i]--
         }

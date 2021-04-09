@@ -1,5 +1,4 @@
-import java.lang.IllegalStateException
-import java.lang.RuntimeException
+import kotlin.system.exitProcess
 
 fun main() {
     val input = Utils.readInput("Advent25")
@@ -166,10 +165,10 @@ private class Smart : Brain {
     private fun getNextMakeAttemptCommand(): String {
         if (commands.isEmpty()) {
             if (droidAt.name == PRESSURE_FLOOR_ROOM) {
-                TODO("Found solution? Holding $holding")
+                throw IllegalStateException("Found solution? Holding $holding")
             } else {
                 if (wearablesIterator == null) {
-                    wearablesIterator = Combinations.combineIndexes(wearables.size, 1, wearables.size).iterator()
+                    wearablesIterator = combinations(wearables.size, 1, wearables.size).iterator()
                 }
 
                 wearablesIterator?.let { iter ->

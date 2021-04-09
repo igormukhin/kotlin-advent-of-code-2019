@@ -223,10 +223,10 @@ private data class Action(val type: ActionType, var steps: Int = 0) {
 
 private fun directionFrom(ch: Char): Direction {
     return when (ch) {
-        '^' -> Direction.NORTH
-        'v' -> Direction.SOUTH
-        '<' -> Direction.WEST
-        '>' -> Direction.EAST
+        '^' -> Direction.UP
+        'v' -> Direction.DOWN
+        '<' -> Direction.LEFT
+        '>' -> Direction.RIGHT
         else -> throw IllegalArgumentException()
     }
 }

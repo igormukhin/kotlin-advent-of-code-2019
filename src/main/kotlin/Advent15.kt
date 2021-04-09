@@ -4,19 +4,19 @@ private enum class MapCell {
 
 private fun Direction.asCode(): Long {
     return when (this) {
-        Direction.NORTH -> 1
-        Direction.SOUTH -> 2
-        Direction.WEST -> 3
-        Direction.EAST -> 4
+        Direction.UP -> 1
+        Direction.DOWN -> 2
+        Direction.LEFT -> 3
+        Direction.RIGHT -> 4
     }
 }
 
 private fun Point.moveSpecial(dir: Direction, amount: Int = 1): Point {
     return when (dir) {
-        Direction.NORTH -> Point(x, y - amount)
-        Direction.SOUTH -> Point(x, y + amount)
-        Direction.WEST -> Point(x - amount, y)
-        Direction.EAST -> Point(x + amount, y)
+        Direction.UP -> Point(x, y - amount)
+        Direction.DOWN -> Point(x, y + amount)
+        Direction.LEFT -> Point(x - amount, y)
+        Direction.RIGHT -> Point(x + amount, y)
     }
 }
 
@@ -32,7 +32,7 @@ fun main() {
     var nextRobot = Point()
     map[robot] = MapCell.EMPTY
     var valve = Point(Int.MIN_VALUE, Int.MIN_VALUE)
-    val plannedMoves = mutableListOf(Direction.NORTH)
+    val plannedMoves = mutableListOf(Direction.UP)
     try {
         Task9.runProgram(program, {
             val direction = plannedMoves.removeFirst()
@@ -110,10 +110,10 @@ private fun planMoves(map: Map<Point, MapCell>, robot: Point): List<Direction> {
 
 private fun findDirection(from: Point, to: Point): Direction {
     return when {
-        to.x > from.x -> Direction.EAST
-        to.x < from.x -> Direction.WEST
-        to.y > from.y -> Direction.SOUTH
-        to.y < from.y -> Direction.NORTH
+        to.x > from.x -> Direction.RIGHT
+        to.x < from.x -> Direction.LEFT
+        to.y > from.y -> Direction.DOWN
+        to.y < from.y -> Direction.UP
         else -> throw IllegalArgumentException()
     }
 }
