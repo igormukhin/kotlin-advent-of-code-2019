@@ -25,10 +25,23 @@ data class Point(val x: Int = 0, val y: Int = 0) {
             Direction.EAST -> Point(x, y + amount)
         }
     }
+
+    fun directionTo(to: Point): Direction {
+        return when {
+            to.y == this.y && to.x > this.x -> Direction.SOUTH
+            to.y == this.y && to.x < this.x -> Direction.NORTH
+            to.x == this.x && to.y > this.y -> Direction.EAST
+            to.x == this.x && to.y < this.y -> Direction.WEST
+            else -> throw IllegalArgumentException()
+        }
+    }
+
+    override fun toString(): String = "[$x; $y]"
 }
 
 data class Point3D(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     operator fun plus(op: Point3D): Point3D = Point3D(x + op.x, y + op.y, z + op.z)
+    override fun toString(): String = "[$x; $y; $z]"
 }
 
 enum class Direction {
@@ -49,6 +62,15 @@ enum class Direction {
             SOUTH -> EAST
             WEST -> SOUTH
             EAST -> NORTH
+        }
+    }
+
+    fun turnAround(): Direction {
+        return when (this) {
+            NORTH -> SOUTH
+            SOUTH -> NORTH
+            WEST -> EAST
+            EAST -> WEST
         }
     }
 }
@@ -93,6 +115,81 @@ private fun permuteIndexes(currentIndex: Int, maxIndex: Int, current: IntArray,
         }
         used[i] = false
     }
+}
+
+object Combinations {
+
+    fun combineIndexes(indexes: Int, minPlaces: Int, maxPlaces: Int = minPlaces) : Iterable<IntArray> {
+        return Combinator(indexes, minPlaces, maxPlaces)
+    }
+
+    private class Combinator(val indexes: Int, val minPlaces: Int, val maxPlaces: Int) : Iterable<IntArray> {
+        init {
+            assert(indexes > 0)
+            assert(minPlaces > 0)
+            assert(maxPlaces >= minPlaces)
+            assert(maxPlaces <= indexes)
+        }
+
+        override fun iterator(): Iterator<IntArray> = OurIterator()
+
+        private inner class OurIterator: Iterator<IntArray> {
+            var places = minPlaces - 1
+            var next: IntArray? = null
+
+            init {
+                resolveNext()
+            }
+
+            private fun resolveNext() {
+                fun initFor(n: Int) {
+                    places = n
+                    next = IntArray(n) { it }
+                }
+
+                // very first combination
+                if (places < minPlaces) {
+                    initFor(minPlaces)
+                    return
+                }
+
+                // next combination
+                val array = next!!
+                for (i in array.lastIndex downTo 0) {
+                    val maxAtI = indexes - places + i
+                    if (array[i] < maxAtI) {
+                        array[i]++
+                        for (j in (i + 1) until places) {
+                            array[j] = array[j - 1] + 1
+                        }
+                        return
+                    }
+                }
+
+                // next number of places
+                if (places < maxPlaces) {
+                    initFor(places + 1)
+                    return
+                }
+
+                // no more combinations
+                next = null
+            }
+
+            override fun hasNext(): Boolean {
+                return next != null
+            }
+
+            override fun next(): IntArray {
+                if (next == null) {
+                    throw NoSuchElementException()
+                }
+
+                return next!!.copyOf().also { resolveNext() }
+            }
+        }
+    }
+
 }
 
 fun greatestCommonDivisor(pa: Long, pb: Long): Long {
@@ -179,7 +276,7 @@ object Dijkstra {
         start: C,
         targetTester: (pos: C) -> Boolean,
         validMovesResolver: (pos: C) -> List<C>,
-        moveCostResolver: (from: C, to: C) -> Int,
+        moveCostResolver: (from: C, to: C) -> Int = { _, _ -> 1 },
         onTargetNotFound: ((costs: Map<C, Int>) -> Unit)? = null
     ): List<C> {
         val costs = mutableMapOf<C, Int>()
