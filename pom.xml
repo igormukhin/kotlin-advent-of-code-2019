@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mainModule</artifactId>
-    <groupId>me.user</groupId>
+    <groupId>org.igormukhin</groupId>
+    <artifactId>kotlin-advent-of-code-2019</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
